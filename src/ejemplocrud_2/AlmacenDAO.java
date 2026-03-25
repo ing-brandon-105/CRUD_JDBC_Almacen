@@ -6,25 +6,29 @@ import java.sql.*; // Contiene Connection, PreparedStatement, ResultSet, Stateme
 import java.util.ArrayList;
 import java.util.List;
 
-// Clase encargada de realizar las operaciones CRUD (Create, Read, Update, Delete) en la tabla "artista"
-public class ArtistaDAO {
+/*
+ * DAO = Data Access Object
+ * Esta clase contiene todas las operaciones CRUD
+ * sobre la tabla almacen
+ */
+public class AlmacenDAO {
     
-    // Método para insertar un artista en la base de datos
-    public void crearArtista(Artista artista) {
-        // Definimos la consulta SQL para insertar un nuevo artista, con parámetros (?) para prevenir inyección SQL
-        String sql = "INSERT INTO artista (Nombre, Genero_Musical) VALUES (?, ?)";
+    // Método para insertar un nuevo almacen en la base de datos
+    public void crearAlmacen(Almacen almacen) {
+        // Definimos la consulta SQL para insertar un nuevo almacen, con parámetros (?) para prevenir inyección SQL
+        String sql = "INSERT INTO almacen (nombre, descripcion) VALUES (?, ?)";
         
         // Uso de try-with-resources para garantizar el cierre de la conexión y los recursos
         try (Connection conn = ConexionBD.getConnection(); // Obtener conexión a la base de datos
              PreparedStatement pstmt = conn.prepareStatement(sql)) { // Preparar la consulta SQL con parámetros
             
             // Asignamos valores a los parámetros de la consulta
-            pstmt.setString(1, artista.getNombre()); // Primer parámetro: Nombre del artista
-            pstmt.setString(2, artista.getGeneroMusical()); // Segundo parámetro: Género musical
+            pstmt.setString(1, almacen.getNombre()); // Primer parámetro: Nombre del almacen
+            pstmt.setString(2, almacen.getDescripcion()); // Segundo parámetro: de almacen
             
             // Ejecutamos la consulta para insertar el registro
             pstmt.executeUpdate();
-            System.out.println("✅ Artista agregado exitosamente.");
+            System.out.println("✅ Almacen agregado exitosamente.");
             
         } catch (SQLException e) {
             // Captura cualquier error de SQL y lo muestra en la consola
@@ -32,12 +36,12 @@ public class ArtistaDAO {
         }
     }
 
-    // Método para obtener todos los artistas de la base de datos
-    public List<Artista> obtenerArtistas() {
-        List<Artista> lista = new ArrayList<>(); // Lista donde se almacenarán los artistas obtenidos
+    // Método para obtener todos los almacenes de la base de datos
+    public List<Almacen> obtenerAlmacenes() {
+        List<Almacen> lista = new ArrayList<>(); // Lista donde se almacenarán los almacenes obtenidos
         
-        // Definimos la consulta SQL para seleccionar todos los registros de la tabla "artista"
-        String sql = "SELECT * FROM artista";
+        // Definimos la consulta SQL para seleccionar todos los registros de la tabla "almacen"
+        String sql = "SELECT * FROM almacen";
 
         // Uso de try-with-resources para gestionar los recursos de conexión
         try (Connection conn = ConexionBD.getConnection(); // Obtener conexión
@@ -46,44 +50,44 @@ public class ArtistaDAO {
 
             // Recorremos los resultados fila por fila
             while (rs.next()) {
-                // Creamos un objeto Artista con los datos obtenidos de la base de datos
-                Artista artista = new Artista(
-                        rs.getInt("ID_Artista"), // Obtener el ID del artista
-                        rs.getString("Nombre"), // Obtener el nombre del artista
-                        rs.getString("Genero_Musical") // Obtener el género musical
+                // Creamos un objeto Almacen con los datos obtenidos de la base de datos
+                Almacen almacen = new Almacen(
+                        rs.getInt("id_almacen"), // Obtener el ID del almacen
+                        rs.getString("nombre"), // Obtener el nombre del almacen
+                        rs.getString("descripcion") // Obtener la descripcion del almacen
                 );
-                lista.add(artista); // Agregamos el artista a la lista
+                lista.add(almacen); // Agregamos el artista a la lista
             }
         } catch (SQLException e) {
             // Captura cualquier error de SQL y lo muestra en la consola
             e.printStackTrace();
         }
         
-        return lista; // Retornamos la lista con todos los artistas obtenidos
+        return lista; // Retornamos la lista con todos los almacenes obtenidos
     }
 
-    // Método para actualizar un artista en la base de datos por su ID
-    public void actualizarArtista(int id, String nuevoNombre, String nuevoGenero) {
-        // Definimos la consulta SQL para actualizar un artista, utilizando parámetros (?) para mayor seguridad
-        String sql = "UPDATE artista SET Nombre = ?, Genero_Musical = ? WHERE ID_Artista = ?";
+    // Método para actualizar un alamcen en la base de datos por su ID
+    public void actualizarAlmacen(int id, String nombre, String descripcion) {
+        // Definimos la consulta SQL para actualizar un almacen, utilizando parámetros (?) para mayor seguridad
+        String sql = "UPDATE almacen SET nombre = ?, descripcion = ? WHERE id_almacen = ?";
         
         // Uso de try-with-resources para gestionar la conexión y recursos
         try (Connection conn = ConexionBD.getConnection(); // Obtener conexión
              PreparedStatement pstmt = conn.prepareStatement(sql)) { // Preparar la consulta SQL
             
             // Asignamos los valores a los parámetros de la consulta
-            pstmt.setString(1, nuevoNombre); // Primer parámetro: Nuevo nombre del artista
-            pstmt.setString(2, nuevoGenero); // Segundo parámetro: Nuevo género musical
-            pstmt.setInt(3, id); // Tercer parámetro: ID del artista que queremos actualizar
+            pstmt.setString(1, nombre); // Primer parámetro: Nuevo nombre del almacen
+            pstmt.setString(2, descripcion); // Segundo parámetro: descripcion del almacen
+            pstmt.setInt(3, id); // Tercer parámetro: ID del almacen que queremos actualizar
             
             // Ejecutamos la consulta y obtenemos el número de filas afectadas
             int filasActualizadas = pstmt.executeUpdate();
 
             // Verificamos si se realizó la actualización correctamente
             if (filasActualizadas > 0) {
-                System.out.println("✅ Artista actualizado correctamente.");
+                System.out.println("✅ Almacen actualizado correctamente.");
             } else {
-                System.out.println("⚠️ No se encontró el artista con ID: " + id);
+                System.out.println("⚠️ No se encontró el almacen con ID: " + id);
             }
         } catch (SQLException e) {
             // Captura cualquier error de SQL y lo muestra en la consola
@@ -91,10 +95,10 @@ public class ArtistaDAO {
         }
     }
 
-    // Método para eliminar un artista de la base de datos por su ID
-    public void eliminarArtista(int id) {
-        // Definimos la consulta SQL para eliminar un artista con el ID especificado
-        String sql = "DELETE FROM artista WHERE ID_Artista = ?";
+    // Método para eliminar un almacen de la base de datos por su ID
+    public void eliminarAlmacen(int id) {
+        // Definimos la consulta SQL para eliminar un almacen con el ID especificado
+        String sql = "DELETE FROM almacen WHERE id_almacen = ?";
         
         // Uso de try-with-resources para gestionar la conexión y los recursos
         try (Connection conn = ConexionBD.getConnection(); // Obtener conexión
@@ -108,9 +112,9 @@ public class ArtistaDAO {
 
             // Verificamos si se realizó la eliminación correctamente
             if (filasEliminadas > 0) {
-                System.out.println("✅ Artista eliminado correctamente.");
+                System.out.println("✅ Almacen eliminado correctamente.");
             } else {
-                System.out.println("⚠️ No se encontró el artista con ID: " + id);
+                System.out.println("⚠️ No se encontró el almacen con el ID: " + id);
             }
         } catch (SQLException e) {
             // Captura cualquier error de SQL y lo muestra en la consola

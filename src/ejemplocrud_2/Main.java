@@ -1,4 +1,4 @@
-// Declaración del paquete donde se encuentra esta clase
+1// Declaración del paquete donde se encuentra esta clase
 package ejemplocrud_2;
 
 // Importa las clases necesarias
@@ -11,17 +11,17 @@ public class Main {
         // Crea un objeto Scanner para leer la entrada del usuario
         Scanner scanner = new Scanner(System.in);
         
-        // Crea una instancia de ArtistaDAO, que maneja las operaciones CRUD
-        ArtistaDAO artistaDAO = new ArtistaDAO();
+        // Crea una instancia de AlmacenDAO, que maneja las operaciones CRUD
+        AlmacenDAO almacenDAO = new AlmacenDAO();
 
         // Bucle infinito para mostrar el menú hasta que el usuario decida salir
         while (true) {
             // Muestra el menú de opciones en la consola
-            System.out.println("\n=== CRUD de Artistas ===");
-            System.out.println("1. Agregar Artista");
-            System.out.println("2. Listar Artistas");
-            System.out.println("3. Actualizar Artista");
-            System.out.println("4. Eliminar Artista");
+            System.out.println("\n=== CRUD de Almacenes ===");
+            System.out.println("1. Agregar Almacen");
+            System.out.println("2. Listar Almacen");
+            System.out.println("3. Actualizar Almacen");
+            System.out.println("4. Eliminar Almacen");
             System.out.println("5. Salir");
             System.out.print("Seleccione una opción: ");
             
@@ -33,45 +33,45 @@ public class Main {
             switch (opcion) {
                 case 1:
                     // Opción para agregar un artista
-                    System.out.print("Ingrese el nombre del artista: ");
-                    String nombre = scanner.nextLine(); // Lee el nombre del artista
-                    System.out.print("Ingrese el género musical: ");
-                    String genero = scanner.nextLine(); // Lee el género musical
+                    System.out.print("Ingrese el nombre del almacen: ");
+                    String nombre = scanner.nextLine(); // Lee el nombre del almacen
+                    System.out.print("Ingrese decripcion del almacen: ");
+                    String descripcion = scanner.nextLine(); // Lee el descripcion almacen
                     // Crea un nuevo objeto Artista con los datos ingresados
-                    Artista nuevoArtista = new Artista(0, nombre, genero);
+                    Almacen almacen = new Almacen(0, nombre, descripcion);
                     // Llama al método para agregar el artista en la base de datos
-                    artistaDAO.crearArtista(nuevoArtista);
+                    almacenDAO.crearAlmacen(almacen);
                     break;
                 
                 case 2:
-                    // Opción para listar los artistas
-                    List<Artista> artistas = artistaDAO.obtenerArtistas(); // Obtiene la lista de artistas
-                    System.out.println("\n=== Lista de Artistas ===");
+                    // Opción para listar los almacenes
+                    List<Almacen> lista = almacenDAO.obtenerAlmacenes(); // Obtiene la lista de almacenes
+                    System.out.println("\n=== Lista de Almacenes ===");
                     // Itera sobre la lista e imprime cada artista
-                    for (Artista a : artistas) {
+                    for (Almacen a : lista) {
                         System.out.println(a);
                     }
                     break;
 
                 case 3:
                     // Opción para actualizar los datos de un artista
-                    System.out.print("Ingrese el ID del artista a actualizar: ");
-                    int idActualizar = scanner.nextInt(); // Lee el ID del artista a actualizar
+                    System.out.print("Ingrese el ID del almacen a actualizar: ");
+                    int idActualizar = scanner.nextInt(); // Lee el ID del almacen a actualizar
                     scanner.nextLine(); // Limpia el buffer del scanner
                     System.out.print("Ingrese el nuevo nombre: ");
                     String nuevoNombre = scanner.nextLine(); // Lee el nuevo nombre
-                    System.out.print("Ingrese el nuevo género musical: ");
-                    String nuevoGenero = scanner.nextLine(); // Lee el nuevo género musical
-                    // Llama al método para actualizar el artista en la base de datos
-                    artistaDAO.actualizarArtista(idActualizar, nuevoNombre, nuevoGenero);
+                    System.out.print("Ingrese nueva descripcion: ");
+                    String nuevoDescripcion = scanner.nextLine(); // Lee el nueva descripcion
+                    // Llama al método para actualizar el almacen en la base de datos
+                    almacenDAO.actualizarAlmacen(idActualizar, nuevoNombre, nuevoDescripcion);
                     break;
 
                 case 4:
-                    // Opción para eliminar un artista
-                    System.out.print("Ingrese el ID del artista a eliminar: ");
+                    // Opción para eliminar un almacen
+                    System.out.print("Ingrese el ID del almacen a eliminar: ");
                     int idEliminar = scanner.nextInt(); // Lee el ID del artista a eliminar
                     // Llama al método para eliminar el artista en la base de datos
-                    artistaDAO.eliminarArtista(idEliminar);
+                    almacenDAO.eliminarAlmacen(idEliminar);
                     break;
 
                 case 5:
